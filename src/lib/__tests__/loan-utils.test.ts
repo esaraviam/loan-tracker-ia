@@ -1,116 +1,221 @@
-import { getLoanStatus, calculateDaysOverdue, calculateLoanDuration, getStatusColor } from "@/lib/loan-utils"
-import type { Loan } from "@prisma/client"
+import { 
+  getLoanStatus, 
+  calculateOverdueDays, 
+  formatCurrency, 
+  getStatusBadge,
+  calculateTotalLoans,
+  getOverdueLoans,
+  formatLoanDate
+} from "@/lib/loan-utils"
+import { Loan, LoanStatus } from "@prisma/client"
 
 describe("Loan Utils", () => {
   const mockLoan: Loan = {
     id: "1",
-    userId: "user1",
-    recipientName: "John Doe",
-    itemName: "Book",
-    description: null,
-    quantity: 1,
-    borrowedAt: new Date("2024-01-01"),
-    returnBy: new Date("2024-02-01"),
-    returnedAt: null,
-    stateStart: "Good",
-    stateEnd: null,
+    borrowerName: "John Doe",
+    borrowerEmail: "john@example.com",
+    borrowerPhone: "123456789",
+    itemDescription: "MacBook Pro",
+    amount: 2500,
+    loanDate: new Date("2024-01-01"),
+    dueDate: new Date("2024-02-01"),
+    returnDate: null,
+    notes: null,
+    photos: [],
+    status: LoanStatus.ACTIVE,
     createdAt: new Date(),
     updatedAt: new Date(),
+    userId: "user1",
+    categoryId: "cat1"
   }
 
   describe("getLoanStatus", () => {
-    it("should return 'returned' for returned loans", () => {
+    beforeEach(() => {
+      jest.useFakeTimers()
+      jest.setSystemTime(new Date('2024-01-15'))
+    })
+
+    afterEach(() => {
+      jest.useRealTimers()
+    })
+
+    it("should return RETURNED for loans with return date", () => {
       const returnedLoan = {
         ...mockLoan,
-        returnedAt: new Date("2024-01-15"),
+        returnDate: new Date("2024-01-15"),
+        status: LoanStatus.RETURNED
       }
       
-      expect(getLoanStatus(returnedLoan)).toBe("returned")
+      expect(getLoanStatus(returnedLoan)).toBe(LoanStatus.RETURNED)
     })
 
-    it("should return 'overdue' for overdue loans", () => {
+    it("should return OVERDUE for loans past due date", () => {
       const overdueLoan = {
         ...mockLoan,
-        returnBy: new Date("2020-01-01"), // Past date
+        dueDate: new Date("2024-01-10"), // 5 days ago
+        status: LoanStatus.OVERDUE
       }
       
-      expect(getLoanStatus(overdueLoan)).toBe("overdue")
+      expect(getLoanStatus(overdueLoan)).toBe(LoanStatus.OVERDUE)
     })
 
-    it("should return 'active' for active loans", () => {
+    it("should return ACTIVE for current loans", () => {
       const activeLoan = {
         ...mockLoan,
-        returnBy: new Date("2030-01-01"), // Future date
+        dueDate: new Date("2024-01-20"), // 5 days in future
+        status: LoanStatus.ACTIVE
       }
       
-      expect(getLoanStatus(activeLoan)).toBe("active")
+      expect(getLoanStatus(activeLoan)).toBe(LoanStatus.ACTIVE)
     })
   })
 
-  describe("calculateDaysOverdue", () => {
+  describe("calculateOverdueDays", () => {
+    beforeEach(() => {
+      jest.useFakeTimers()
+      jest.setSystemTime(new Date('2024-01-15'))
+    })
+
+    afterEach(() => {
+      jest.useRealTimers()
+    })
+
     it("should return 0 for non-overdue loans", () => {
       const activeLoan = {
         ...mockLoan,
-        returnBy: new Date("2030-01-01"),
+        dueDate: new Date("2024-01-20"), // 5 days in future
       }
       
-      expect(calculateDaysOverdue(activeLoan)).toBe(0)
+      expect(calculateOverdueDays(activeLoan.dueDate)).toBe(0)
     })
 
-    it("should return positive days for overdue loans", () => {
+    it("should calculate correct overdue days", () => {
       const overdueLoan = {
         ...mockLoan,
-        returnBy: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000), // 5 days ago
+        dueDate: new Date("2024-01-10"), // 5 days ago
       }
       
-      expect(calculateDaysOverdue(overdueLoan)).toBeGreaterThan(0)
+      expect(calculateOverdueDays(overdueLoan.dueDate)).toBe(5)
     })
 
-    it("should return 0 for returned loans", () => {
-      const returnedLoan = {
+    it("should return 0 for today's due date", () => {
+      const todayLoan = {
         ...mockLoan,
-        returnedAt: new Date(),
+        dueDate: new Date("2024-01-15"),
       }
       
-      expect(calculateDaysOverdue(returnedLoan)).toBe(0)
+      expect(calculateOverdueDays(todayLoan.dueDate)).toBe(0)
     })
   })
 
-  describe("calculateLoanDuration", () => {
-    it("should calculate duration for active loans", () => {
-      const loan = {
-        ...mockLoan,
-        borrowedAt: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000), // 10 days ago
-      }
-      
-      expect(calculateLoanDuration(loan)).toBeGreaterThanOrEqual(10)
+  describe("formatCurrency", () => {
+    it("should format positive amounts", () => {
+      expect(formatCurrency(1234.56)).toBe("$1,234.56")
     })
 
-    it("should calculate duration for returned loans", () => {
-      const loan = {
-        ...mockLoan,
-        borrowedAt: new Date("2024-01-01"),
-        returnedAt: new Date("2024-01-11"), // 10 days later
-      }
-      
-      expect(calculateLoanDuration(loan)).toBe(11)
+    it("should format zero", () => {
+      expect(formatCurrency(0)).toBe("$0.00")
+    })
+
+    it("should format negative amounts", () => {
+      expect(formatCurrency(-500)).toBe("-$500.00")
+    })
+
+    it("should handle large numbers", () => {
+      expect(formatCurrency(1000000.99)).toBe("$1,000,000.99")
+    })
+
+    it("should round to 2 decimal places", () => {
+      expect(formatCurrency(123.456)).toBe("$123.46")
     })
   })
 
-  describe("getStatusColor", () => {
-    it("should return green classes for active status", () => {
-      const color = getStatusColor("active")
-      expect(color).toContain("green")
+  describe("getStatusBadge", () => {
+    it("should return correct badge for ACTIVE", () => {
+      const badge = getStatusBadge(LoanStatus.ACTIVE)
+      expect(badge.text).toBe("Active")
+      expect(badge.variant).toBe("default")
     })
 
-    it("should return red classes for overdue status", () => {
-      const color = getStatusColor("overdue")
-      expect(color).toContain("red")
+    it("should return correct badge for OVERDUE", () => {
+      const badge = getStatusBadge(LoanStatus.OVERDUE)
+      expect(badge.text).toBe("Overdue")
+      expect(badge.variant).toBe("destructive")
     })
 
-    it("should return gray classes for returned status", () => {
-      const color = getStatusColor("returned")
-      expect(color).toContain("gray")
+    it("should return correct badge for RETURNED", () => {
+      const badge = getStatusBadge(LoanStatus.RETURNED)
+      expect(badge.text).toBe("Returned")
+      expect(badge.variant).toBe("secondary")
+    })
+  })
+
+  describe("calculateTotalLoans", () => {
+    it("should calculate total from array of loans", () => {
+      const loans = [
+        { ...mockLoan, amount: 100 },
+        { ...mockLoan, amount: 200 },
+        { ...mockLoan, amount: 300 }
+      ]
+      
+      expect(calculateTotalLoans(loans)).toBe(600)
+    })
+
+    it("should return 0 for empty array", () => {
+      expect(calculateTotalLoans([])).toBe(0)
+    })
+
+    it("should handle decimal amounts", () => {
+      const loans = [
+        { ...mockLoan, amount: 10.50 },
+        { ...mockLoan, amount: 20.25 }
+      ]
+      
+      expect(calculateTotalLoans(loans)).toBe(30.75)
+    })
+  })
+
+  describe("getOverdueLoans", () => {
+    beforeEach(() => {
+      jest.useFakeTimers()
+      jest.setSystemTime(new Date('2024-01-15'))
+    })
+
+    afterEach(() => {
+      jest.useRealTimers()
+    })
+
+    it("should filter overdue loans", () => {
+      const loans = [
+        { ...mockLoan, dueDate: new Date("2024-01-10"), status: LoanStatus.OVERDUE },
+        { ...mockLoan, dueDate: new Date("2024-01-20"), status: LoanStatus.ACTIVE },
+        { ...mockLoan, dueDate: new Date("2024-01-05"), status: LoanStatus.OVERDUE }
+      ]
+      
+      const overdueLoans = getOverdueLoans(loans)
+      expect(overdueLoans).toHaveLength(2)
+    })
+
+    it("should not include returned loans", () => {
+      const loans = [
+        { ...mockLoan, dueDate: new Date("2024-01-10"), status: LoanStatus.OVERDUE },
+        { ...mockLoan, dueDate: new Date("2024-01-05"), status: LoanStatus.RETURNED, returnDate: new Date() }
+      ]
+      
+      const overdueLoans = getOverdueLoans(loans)
+      expect(overdueLoans).toHaveLength(1)
+    })
+  })
+
+  describe("formatLoanDate", () => {
+    it("should format date correctly", () => {
+      const date = new Date("2024-01-15")
+      expect(formatLoanDate(date)).toBe("Jan 15, 2024")
+    })
+
+    it("should handle invalid dates", () => {
+      expect(formatLoanDate(null)).toBe("N/A")
+      expect(formatLoanDate(undefined)).toBe("N/A")
     })
   })
 })
