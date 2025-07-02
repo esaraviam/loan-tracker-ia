@@ -92,6 +92,44 @@ Full dark mode support for comfortable viewing.
 - Input validation on client and server
 - File upload restrictions (JPG/PNG, 5MB max)
 
+## 🤝 Contributing
+
+Please read our contributing guidelines before submitting PRs.
+
+### Commit Convention
+
+This project follows [Conventional Commits](https://www.conventionalcommits.org/) specification. All commits must be semantic.
+
+#### Commit Types
+
+- `feat`: New feature
+- `fix`: Bug fix
+- `docs`: Documentation changes
+- `style`: Code style changes (formatting, semicolons, etc)
+- `refactor`: Code refactoring without changing functionality
+- `perf`: Performance improvements
+- `test`: Adding or modifying tests
+- `build`: Build system or dependency changes
+- `ci`: CI/CD configuration changes
+- `chore`: Other changes that don't modify src or test files
+
+#### Examples
+
+```bash
+feat(auth): add password reset functionality
+fix(loans): correct date calculation for overdue loans
+docs(api): update API documentation for loan endpoints
+refactor(dashboard): simplify stats calculation logic
+```
+
+#### Commit Message Template
+
+A git commit template is configured in `.gitmessage`. To use it:
+
+```bash
+git config --local commit.template .gitmessage
+```
+
 ## 📄 License
 
 MIT License
