@@ -48,14 +48,43 @@ Open [http://localhost:3000](http://localhost:3000) to see the application.
 - **Smart Dashboard**: Visual overview with status filters
 - **Reports & Analytics**: Insights into lending patterns
 - **Data Export**: Download records in CSV, JSON, or PDF
+- **Server Actions**: Modern data mutations without traditional API endpoints
+- **Real-time Updates**: Optimistic UI updates with server-side validation
+- **Dark Mode**: Full theme support with system preference detection
 
 ## 🛠️ Tech Stack
 
-- **Framework**: Next.js 15.3 (App Router)
-- **Language**: TypeScript (strict mode)
-- **Database**: SQLite + Prisma ORM
-- **Styling**: Tailwind CSS + shadcn/ui
-- **Authentication**: JWT + bcrypt
+### Core Technologies
+- **Framework**: Next.js 15.1 (App Router + React Server Components)
+- **Language**: TypeScript 5.7 (strict mode)
+- **Database**: SQLite (dev) / PostgreSQL (prod) + Prisma ORM 5.22
+- **Styling**: Tailwind CSS 3.4 + shadcn/ui components
+- **Authentication**: Custom JWT implementation with bcryptjs
+
+### State Management & Data Fetching
+- **Server Actions**: Next.js 15 Server Actions for all data mutations
+- **React Server Components**: For optimized server-side rendering
+- **React Hook Form**: Form state management with Zod validation
+- **Tanstack Query**: Client-side caching (where needed)
+
+### UI/UX Libraries
+- **Radix UI**: Accessible component primitives
+- **Lucide React**: Modern icon system
+- **Recharts**: Data visualization for analytics
+- **React Dropzone**: File upload handling
+- **date-fns**: Date manipulation and formatting
+
+### Development & Testing
+- **Jest**: Unit and integration testing
+- **React Testing Library**: Component testing
+- **ESLint**: Code linting with Next.js config
+- **Prettier**: Code formatting
+- **Commitlint**: Enforce conventional commits
+
+### Infrastructure (Production Ready)
+- **Vercel**: Optimized for deployment
+- **Edge Runtime**: Compatible with serverless functions
+- **Server Actions**: Replacing traditional API routes for better DX
 
 ## 📱 Screenshots
 
@@ -71,10 +100,33 @@ Full dark mode support for comfortable viewing.
 ## 🏗️ Architecture Decisions
 
 1. **App Router**: Leverages Next.js 15's latest features for better performance
-2. **Feature-based Structure**: Organized by features (auth, loans, dashboard) for scalability
-3. **Server Components**: Optimized data fetching with React Server Components
-4. **Type Safety**: Strict TypeScript with Prisma-generated types
-5. **Mobile-First**: Responsive design that works seamlessly on all devices
+2. **Server Actions**: Replaced traditional API routes with Next.js Server Actions for improved DX and type safety
+3. **Feature-based Structure**: Organized by features (auth, loans, dashboard) for scalability
+4. **Server Components**: Optimized data fetching with React Server Components
+5. **Type Safety**: Strict TypeScript with Prisma-generated types and Zod validation
+6. **Mobile-First**: Responsive design that works seamlessly on all devices
+7. **Edge-Ready**: Compatible with serverless and edge runtimes for optimal performance
+
+## 📁 Project Structure
+
+```
+src/
+├── app/                    # Next.js App Router
+│   ├── (auth)/            # Authentication pages
+│   ├── (dashboard)/       # Protected dashboard pages
+│   └── actions/           # Server Actions
+├── components/            # Reusable UI components
+│   ├── auth/             # Authentication components
+│   ├── dashboard/        # Dashboard widgets
+│   ├── loans/            # Loan management components
+│   ├── reports/          # Analytics components
+│   └── ui/               # shadcn/ui components
+├── lib/                   # Utilities and shared logic
+│   ├── auth.ts           # Authentication helpers
+│   ├── prisma.ts         # Database client
+│   └── validations.ts    # Zod schemas
+└── hooks/                # Custom React hooks
+```
 
 ## 📦 Available Scripts
 
@@ -84,6 +136,7 @@ Full dark mode support for comfortable viewing.
 - `npm run lint` - Run ESLint
 - `npm run type-check` - TypeScript validation
 - `npm test` - Run tests
+- `npm run vercel-build` - Build for Vercel deployment
 
 ## 🔒 Security
 
