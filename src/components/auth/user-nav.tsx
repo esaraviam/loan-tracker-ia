@@ -1,9 +1,10 @@
 "use client"
 
 import { useState } from "react"
+import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { User, LogOut, LayoutDashboard, Loader2 } from "lucide-react"
-import { useTranslations } from "next-intl"
-import { Link, useRouter } from "@/i18n/navigation"
+import { useTranslation } from "react-i18next"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -22,7 +23,7 @@ interface UserNavProps {
 export function UserNav({ email }: UserNavProps) {
   const router = useRouter()
   const { toast } = useToast()
-  const t = useTranslations()
+  const { t } = useTranslation()
   const [isLoading, setIsLoading] = useState(false)
 
   async function handleLogout() {
