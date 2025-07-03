@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useState } from "react"
+import { useCallback, useState, useEffect } from "react"
 import { useDropzone } from "react-dropzone"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
@@ -25,6 +25,19 @@ export function PhotoUpload({
   description,
 }: PhotoUploadProps) {
   const [errors, setErrors] = useState<string[]>([])
+  const [photoUrls, setPhotoUrls] = useState<string[]>([])
+
+  // Clean up object URLs when component unmounts or photos change
+  useEffect(() => {
+    // Create new URLs for current photos
+    const urls = photos.map(photo => URL.createObjectURL(photo))
+    setPhotoUrls(urls)
+
+    // Cleanup function to revoke previous URLs
+    return () => {
+      urls.forEach(url => URL.revokeObjectURL(url))
+    }
+  }, [photos])
 
   const onDrop = useCallback(
     async (acceptedFiles: File[]) => {
@@ -123,7 +136,7 @@ export function PhotoUpload({
             <Card key={index} className="relative overflow-hidden">
               <div className="relative aspect-square">
                 <Image
-                  src={URL.createObjectURL(photo)}
+                  src={photoUrls[index] || "/placeholder-loan.png"}
                   alt={`Photo ${index + 1}`}
                   fill
                   className="object-cover"

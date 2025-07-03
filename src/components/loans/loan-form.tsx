@@ -160,7 +160,10 @@ export function LoanForm() {
                       type="number"
                       min={1}
                       {...field}
-                      onChange={(e) => field.onChange(parseInt(e.target.value))}
+                      onChange={(e) => {
+                        const value = parseInt(e.target.value)
+                        field.onChange(isNaN(value) ? 1 : value)
+                      }}
                     />
                   </FormControl>
                   <FormMessage />

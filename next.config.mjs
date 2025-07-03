@@ -17,11 +17,17 @@ const nextConfig = {
       bodySizeLimit: '5mb',
     },
   },
-  webpack: (config) => {
+  webpack: (config, { dev }) => {
     config.resolve.alias = {
       ...config.resolve.alias,
       '@': './src',
     }
+    
+    // Disable webpack cache in development to avoid errors
+    if (dev) {
+      config.cache = false
+    }
+    
     return config
   },
 }

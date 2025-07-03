@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
+import jwt from "jsonwebtoken"
 
 // Routes that require authentication
 const protectedRoutes = ["/dashboard", "/loans"]
@@ -17,22 +18,31 @@ export function middleware(request: NextRequest) {
   )
   const isAuthRoute = authRoutes.some((route) => pathname.startsWith(route))
 
-  // Check if user has auth token
-  const hasAuthToken = !!authToken
+  // Validate auth token
+  let hasValidToken = false
+  if (authToken) {
+    try {
+      // Only check if token can be decoded (actual validation happens in API routes)
+      jwt.decode(authToken)
+      hasValidToken = true
+    } catch {
+      hasValidToken = false
+    }
+  }
 
   // Redirect authenticated users from home to dashboard
-  if (pathname === "/" && hasAuthToken) {
+  if (pathname === "/" && hasValidToken) {
     return NextResponse.redirect(new URL("/dashboard", request.url))
   }
 
   // Redirect logic
-  if (isProtectedRoute && !hasAuthToken) {
+  if (isProtectedRoute && !hasValidToken) {
     const loginUrl = new URL("/login", request.url)
     loginUrl.searchParams.set("redirect", pathname)
     return NextResponse.redirect(loginUrl)
   }
 
-  if (isAuthRoute && hasAuthToken) {
+  if (isAuthRoute && hasValidToken) {
     return NextResponse.redirect(new URL("/dashboard", request.url))
   }
 

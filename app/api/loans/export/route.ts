@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma"
 import { getCurrentUser } from "@/lib/auth"
 import { getLoanStatus } from "@/lib/loan-utils"
 import { format, subDays, startOfYear, endOfYear } from "date-fns"
+import type { Prisma, Loan, LoanPhoto } from "@prisma/client"
 
 export async function GET(request: NextRequest) {
   try {
@@ -44,12 +45,10 @@ export async function GET(request: NextRequest) {
     }
 
     // Build where clause
-    const where: any = { userId: user.id }
-    if (Object.keys(dateFilter).length > 0) {
-      where.createdAt = dateFilter
-    }
-    if (!includeReturned) {
-      where.returnedAt = null
+    const where: Prisma.LoanWhereInput = { 
+      userId: user.id,
+      ...(Object.keys(dateFilter).length > 0 && { createdAt: dateFilter }),
+      ...(!includeReturned && { returnedAt: null })
     }
 
     // Fetch loans with photos
@@ -99,7 +98,9 @@ export async function GET(request: NextRequest) {
   }
 }
 
-function generateCSV(loans: any[], includePhotos: boolean): string {
+type LoanWithPhotos = Loan & { photos?: LoanPhoto[] }
+
+function generateCSV(loans: LoanWithPhotos[], includePhotos: boolean): string {
   const headers = [
     "ID",
     "Item Name",
@@ -153,7 +154,7 @@ function generateCSV(loans: any[], includePhotos: boolean): string {
   return [headers.join(","), ...rows].join("\n")
 }
 
-function generatePDFHTML(loans: any[], userEmail: string): string {
+function generatePDFHTML(loans: LoanWithPhotos[], userEmail: string): string {
   const loanRows = loans.map(loan => {
     const status = getLoanStatus(loan)
     return `

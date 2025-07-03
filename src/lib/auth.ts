@@ -4,8 +4,15 @@ import { cookies } from "next/headers"
 import { prisma } from "@/lib/prisma"
 import type { User } from "@prisma/client"
 
-const JWT_SECRET = process.env["JWT_SECRET"] || "development-secret-key"
+const JWT_SECRET = process.env["JWT_SECRET"]
 const JWT_EXPIRE_TIME = process.env["JWT_EXPIRE_TIME"] || "7d"
+
+if (!JWT_SECRET) {
+  if (process.env.NODE_ENV === "production") {
+    throw new Error("JWT_SECRET environment variable is required in production")
+  }
+  console.warn("WARNING: Using insecure default JWT secret for development only")
+}
 
 export interface JWTPayload {
   userId: string
@@ -24,11 +31,19 @@ export async function verifyPassword(
 }
 
 export function generateToken(payload: JWTPayload): string {
-  return jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRE_TIME })
+  const secret = JWT_SECRET || (process.env.NODE_ENV !== "production" ? "dev-secret" : undefined)
+  if (!secret) {
+    throw new Error("JWT_SECRET is required")
+  }
+  return jwt.sign(payload, secret, { expiresIn: JWT_EXPIRE_TIME })
 }
 
 export function verifyToken(token: string): JWTPayload {
-  return jwt.verify(token, JWT_SECRET) as JWTPayload
+  const secret = JWT_SECRET || (process.env.NODE_ENV !== "production" ? "dev-secret" : undefined)
+  if (!secret) {
+    throw new Error("JWT_SECRET is required")
+  }
+  return jwt.verify(token, secret) as JWTPayload
 }
 
 export async function setAuthCookie(token: string) {

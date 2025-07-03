@@ -47,27 +47,37 @@ export async function POST(request: NextRequest) {
       uploadedPhotos.push(...savedPhotos)
     }
 
-    // Create loan with photos
-    const loan = await prisma.loan.create({
-      data: {
-        userId: user.id,
-        recipientName: validatedData.recipientName,
-        itemName: validatedData.itemName,
-        description: validatedData.description,
-        quantity: validatedData.quantity,
-        borrowedAt: new Date(validatedData.borrowedAt),
-        returnBy: new Date(validatedData.returnBy),
-        stateStart: validatedData.stateStart,
-        photos: {
-          create: uploadedPhotos.map((photo) => ({
+    // Create loan with photos in a transaction
+    const loan = await prisma.$transaction(async (tx) => {
+      const newLoan = await tx.loan.create({
+        data: {
+          userId: user.id,
+          recipientName: validatedData.recipientName,
+          itemName: validatedData.itemName,
+          description: validatedData.description,
+          quantity: validatedData.quantity,
+          borrowedAt: new Date(validatedData.borrowedAt),
+          returnBy: new Date(validatedData.returnBy),
+          stateStart: validatedData.stateStart,
+        },
+      })
+
+      // Create photos if any
+      if (uploadedPhotos.length > 0) {
+        await tx.loanPhoto.createMany({
+          data: uploadedPhotos.map((photo) => ({
+            loanId: newLoan.id,
             url: photo.url,
             type: "initial",
           })),
-        },
-      },
-      include: {
-        photos: true,
-      },
+        })
+      }
+
+      // Return loan with photos
+      return await tx.loan.findUnique({
+        where: { id: newLoan.id },
+        include: { photos: true },
+      })
     })
 
     return NextResponse.json({ loan })
