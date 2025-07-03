@@ -35,7 +35,9 @@ export function generateToken(payload: JWTPayload): string {
   if (!secret) {
     throw new Error("JWT_SECRET is required")
   }
-  return jwt.sign(payload, secret, { expiresIn: JWT_EXPIRE_TIME })
+  return jwt.sign(payload, secret, { 
+    expiresIn: JWT_EXPIRE_TIME as jwt.SignOptions['expiresIn']
+  })
 }
 
 export function verifyToken(token: string): JWTPayload {
