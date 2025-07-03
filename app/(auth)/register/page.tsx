@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Loader2 } from "lucide-react"
+import { useTranslation } from "react-i18next"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -28,8 +29,9 @@ import { useToast } from "@/hooks/use-toast"
 import { registerSchema, type RegisterInput } from "@/lib/validations"
 
 export default function RegisterPage() {
-  const router = useRouter()
+  const _router = useRouter()
   const { toast } = useToast()
+  const { t } = useTranslation()
   const [isLoading, setIsLoading] = useState(false)
 
   const form = useForm<RegisterInput>({
@@ -56,16 +58,16 @@ export default function RegisterPage() {
       }
 
       toast({
-        title: "Account created!",
-        description: "Welcome to Loan Tracker!",
+        title: t('auth.register.success'),
+        description: t('auth.register.successDescription'),
       })
 
       // Auto-login and redirect to dashboard
       window.location.href = "/dashboard"
     } catch (error) {
       toast({
-        title: "Error",
-        description: error instanceof Error ? error.message : "Something went wrong",
+        title: t('common.error'),
+        description: error instanceof Error ? error.message : t('errors.generic'),
         variant: "destructive",
       })
     } finally {
@@ -76,9 +78,9 @@ export default function RegisterPage() {
   return (
     <Card className="w-full max-w-md">
       <CardHeader>
-        <CardTitle>Create an account</CardTitle>
+        <CardTitle>{t('auth.register.title')}</CardTitle>
         <CardDescription>
-          Enter your email and password to get started
+          {t('auth.register.description')}
         </CardDescription>
       </CardHeader>
       <Form {...form}>
@@ -89,11 +91,11 @@ export default function RegisterPage() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>{t('auth.fields.email')}</FormLabel>
                   <FormControl>
                     <Input
                       type="email"
-                      placeholder="name@example.com"
+                      placeholder={t('auth.fields.emailPlaceholder')}
                       {...field}
                     />
                   </FormControl>
@@ -106,11 +108,11 @@ export default function RegisterPage() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel>{t('auth.fields.password')}</FormLabel>
                   <FormControl>
                     <Input
                       type="password"
-                      placeholder="••••••••"
+                      placeholder={t('auth.fields.passwordPlaceholder')}
                       {...field}
                     />
                   </FormControl>
@@ -126,12 +128,12 @@ export default function RegisterPage() {
               disabled={isLoading}
             >
               {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              Create Account
+              {t('auth.register.submit')}
             </Button>
             <p className="text-sm text-center text-muted-foreground">
-              Already have an account?{" "}
+              {t('auth.register.hasAccount')}{" "}
               <Link href="/login" className="text-primary hover:underline">
-                Sign in
+                {t('auth.register.signIn')}
               </Link>
             </p>
           </CardFooter>

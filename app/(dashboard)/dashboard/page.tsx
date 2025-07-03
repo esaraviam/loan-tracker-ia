@@ -7,6 +7,7 @@ import { LoanTimeline } from "@/components/dashboard/loan-timeline"
 import { OverdueAlert } from "@/components/dashboard/overdue-alert"
 import { QuickActions } from "@/components/dashboard/quick-actions"
 import { Skeleton } from "@/components/ui/skeleton"
+import { DashboardHeader } from "@/components/dashboard/dashboard-header"
 
 export default async function DashboardPage() {
   const user = await getCurrentUser()
@@ -14,12 +15,7 @@ export default async function DashboardPage() {
 
   return (
     <div className="container py-8 space-y-8">
-      <div className="flex flex-col space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
-        <p className="text-muted-foreground">
-          Welcome back, {user.email}. Here&apos;s an overview of your loans.
-        </p>
-      </div>
+      <DashboardHeader userEmail={user.email} />
 
       <Suspense fallback={<Skeleton className="h-20 w-full" />}>
         <OverdueAlert userId={user.id} />

@@ -83,22 +83,24 @@ export function LandingPageContent({ user }: LandingPageContentProps) {
         </div>
       </section>
 
-      <section className="container py-24 text-center">
-        <div className="mx-auto max-w-2xl space-y-4">
-          <h2 className="text-3xl font-bold">{t('landing.cta.title')}</h2>
-          <p className="text-lg text-muted-foreground">
-            {t('landing.cta.description')}
-          </p>
-          <div className="pt-4">
-            <Link href="/register">
-              <Button size="lg" className="gap-2">
-                {t('landing.cta.button')}
-                <ArrowRight className="h-4 w-4" />
-              </Button>
-            </Link>
+      {!user && (
+        <section className="container py-24 text-center">
+          <div className="mx-auto max-w-2xl space-y-4">
+            <h2 className="text-3xl font-bold">{t('landing.cta.title')}</h2>
+            <p className="text-lg text-muted-foreground">
+              {t('landing.cta.description')}
+            </p>
+            <div className="pt-4">
+              <Link href="/register">
+                <Button size="lg" className="gap-2">
+                  {t('landing.cta.button')}
+                  <ArrowRight className="h-4 w-4" />
+                </Button>
+              </Link>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
     </main>
   )
 }

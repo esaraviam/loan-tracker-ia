@@ -56,8 +56,16 @@
     }
   },
   "auth": {
+    "fields": {
+      "email": "Email",
+      "emailPlaceholder": "name@example.com",
+      "password": "Password",
+      "passwordPlaceholder": "••••••••",
+      "confirmPassword": "Confirm Password"
+    },
     "login": {
       "title": "Welcome back",
+      "description": "Enter your email and password to sign in",
       "subtitle": "Sign in to your account",
       "email": "Email",
       "password": "Password",
@@ -67,22 +75,35 @@
       "noAccount": "Don't have an account?",
       "signUp": "Sign up",
       "success": "Welcome back!",
-      "error": "Invalid credentials"
+      "successDescription": "You have successfully logged in.",
+      "error": "Invalid credentials",
+      "invalidCredentials": "Invalid credentials"
     },
     "register": {
-      "title": "Create your account",
+      "title": "Create an account",
+      "description": "Enter your email and password to get started",
       "subtitle": "Start tracking your loans today",
       "email": "Email",
       "password": "Password",
       "confirmPassword": "Confirm Password",
-      "submit": "Sign up",
+      "submit": "Create Account",
       "hasAccount": "Already have an account?",
       "signIn": "Sign in",
-      "success": "Account created successfully!",
+      "success": "Account created!",
+      "successDescription": "Welcome to Loan Tracker!",
       "error": "Registration failed"
     },
     "logout": {
       "success": "Logged out successfully"
+    },
+    "resetPassword": {
+      "title": "Reset your password",
+      "description": "Enter your email address and we'll send you a reset link",
+      "submit": "Send Reset Link",
+      "emailSent": "Check your email",
+      "emailSentDescription": "We've sent you a password reset link.",
+      "checkSpam": "If you don't see the email, check your spam folder.",
+      "backToLogin": "Back to login"
     },
     "validation": {
       "emailRequired": "Email is required",
@@ -95,7 +116,7 @@
   },
   "dashboard": {
     "title": "Dashboard",
-    "welcome": "Welcome back, {name}!",
+    "welcome": "Welcome back, {{name}}. Here's an overview of your loans.",
     "stats": {
       "total": "Total Loans",
       "totalDesc": "All time loans",
@@ -104,7 +125,26 @@
       "overdue": "Overdue",
       "overdueDesc": "Need attention",
       "returnRate": "Return Rate",
-      "returnRateDesc": "Items returned on time"
+      "returnRateDesc": "Successfully returned"
+    },
+    "recentLoans": {
+      "title": "Recent Loans",
+      "description": "Your latest lending activity",
+      "empty": "No loans yet",
+      "createFirst": "Create Your First Loan",
+      "viewAll": "View all"
+    },
+    "overdueAlert": {
+      "title": "Attention Required",
+      "description": "You have {{count}} overdue loan{{count, plural, =1 {} other {s}}}.",
+      "daysOverdue": "is {{days}} days overdue.",
+      "viewAll": "View all overdue loans"
+    },
+    "quickActions": {
+      "newLoan": "New Loan",
+      "viewAll": "View All Loans",
+      "reports": "Reports",
+      "export": "Export Data"
     },
     "filters": {
       "all": "All",
@@ -125,8 +165,15 @@
     }
   },
   "loans": {
+    "pageTitle": "My Loans",
+    "pageDescription": "Manage and track all your personal loans",
+    "newLoan": "New Loan",
+    "searchPlaceholder": "Search loans...",
+    "sortBy": "Sort by",
+    "backToLoans": "Back to Loans",
     "create": {
       "title": "Create New Loan",
+      "description": "Record details about the item you're lending out",
       "sections": {
         "basic": "Basic Information",
         "period": "Loan Period",
@@ -191,6 +238,12 @@
       "conditionMax": "Condition must be less than 200 characters",
       "photoSize": "Photo must be less than 5MB",
       "photoType": "Only JPG and PNG images are allowed"
+    },
+    "actions": {
+      "edit": "Edit",
+      "delete": "Delete",
+      "return": "Mark as Returned",
+      "view": "View Details"
     }
   },
   "errors": {

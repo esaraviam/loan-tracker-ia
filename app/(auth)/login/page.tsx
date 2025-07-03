@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Loader2 } from "lucide-react"
+import { useTranslation } from "react-i18next"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -28,8 +29,9 @@ import { useToast } from "@/hooks/use-toast"
 import { loginSchema, type LoginInput } from "@/lib/validations"
 
 export default function LoginPage() {
-  const router = useRouter()
+  const _router = useRouter()
   const { toast } = useToast()
+  const { t } = useTranslation()
   const [isLoading, setIsLoading] = useState(false)
 
   const form = useForm<LoginInput>({
@@ -56,16 +58,16 @@ export default function LoginPage() {
       }
 
       toast({
-        title: "Welcome back!",
-        description: "You have successfully logged in.",
+        title: t('auth.login.success'),
+        description: t('auth.login.successDescription'),
       })
 
       // Force navigation to dashboard
       window.location.href = "/dashboard"
     } catch (error) {
       toast({
-        title: "Error",
-        description: error instanceof Error ? error.message : "Invalid credentials",
+        title: t('common.error'),
+        description: error instanceof Error ? error.message : t('auth.login.invalidCredentials'),
         variant: "destructive",
       })
     } finally {
@@ -76,9 +78,9 @@ export default function LoginPage() {
   return (
     <Card className="w-full max-w-md">
       <CardHeader>
-        <CardTitle>Welcome back</CardTitle>
+        <CardTitle>{t('auth.login.title')}</CardTitle>
         <CardDescription>
-          Enter your email and password to sign in
+          {t('auth.login.description')}
         </CardDescription>
       </CardHeader>
       <Form {...form}>
@@ -89,11 +91,11 @@ export default function LoginPage() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>{t('auth.fields.email')}</FormLabel>
                   <FormControl>
                     <Input
                       type="email"
-                      placeholder="name@example.com"
+                      placeholder={t('auth.fields.emailPlaceholder')}
                       {...field}
                     />
                   </FormControl>
@@ -106,11 +108,11 @@ export default function LoginPage() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel>{t('auth.fields.password')}</FormLabel>
                   <FormControl>
                     <Input
                       type="password"
-                      placeholder="••••••••"
+                      placeholder={t('auth.fields.passwordPlaceholder')}
                       {...field}
                     />
                   </FormControl>
@@ -126,19 +128,19 @@ export default function LoginPage() {
               disabled={isLoading}
             >
               {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              Sign In
+              {t('auth.login.submit')}
             </Button>
             <div className="flex flex-col space-y-2 text-sm text-center">
               <Link
                 href="/reset-password"
                 className="text-muted-foreground hover:text-primary hover:underline"
               >
-                Forgot your password?
+                {t('auth.login.forgotPassword')}
               </Link>
               <p className="text-muted-foreground">
-                Don&apos;t have an account?{" "}
+                {t('auth.login.noAccount')}{" "}
                 <Link href="/register" className="text-primary hover:underline">
-                  Sign up
+                  {t('auth.login.signUp')}
                 </Link>
               </p>
             </div>

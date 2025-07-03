@@ -56,8 +56,16 @@
     }
   },
   "auth": {
+    "fields": {
+      "email": "Correo electrónico",
+      "emailPlaceholder": "nombre@ejemplo.com",
+      "password": "Contraseña",
+      "passwordPlaceholder": "••••••••",
+      "confirmPassword": "Confirmar contraseña"
+    },
     "login": {
       "title": "Bienvenido de vuelta",
+      "description": "Ingresa tu correo electrónico y contraseña para iniciar sesión",
       "subtitle": "Inicia sesión en tu cuenta",
       "email": "Correo electrónico",
       "password": "Contraseña",
@@ -67,22 +75,35 @@
       "noAccount": "¿No tienes una cuenta?",
       "signUp": "Regístrate",
       "success": "¡Bienvenido de vuelta!",
-      "error": "Credenciales inválidas"
+      "successDescription": "Has iniciado sesión exitosamente.",
+      "error": "Credenciales inválidas",
+      "invalidCredentials": "Credenciales inválidas"
     },
     "register": {
-      "title": "Crea tu cuenta",
+      "title": "Crear una cuenta",
+      "description": "Ingresa tu correo electrónico y contraseña para comenzar",
       "subtitle": "Comienza a rastrear tus préstamos hoy",
       "email": "Correo electrónico",
       "password": "Contraseña",
       "confirmPassword": "Confirmar Contraseña",
-      "submit": "Registrarse",
+      "submit": "Crear Cuenta",
       "hasAccount": "¿Ya tienes una cuenta?",
       "signIn": "Inicia sesión",
-      "success": "¡Cuenta creada exitosamente!",
+      "success": "¡Cuenta creada!",
+      "successDescription": "¡Bienvenido a Rastreador de Préstamos!",
       "error": "Error al registrarse"
     },
     "logout": {
       "success": "Sesión cerrada exitosamente"
+    },
+    "resetPassword": {
+      "title": "Restablecer tu contraseña",
+      "description": "Ingresa tu correo electrónico y te enviaremos un enlace de restablecimiento",
+      "submit": "Enviar Enlace de Restablecimiento",
+      "emailSent": "Revisa tu correo",
+      "emailSentDescription": "Te hemos enviado un enlace para restablecer tu contraseña.",
+      "checkSpam": "Si no ves el correo, revisa tu carpeta de spam.",
+      "backToLogin": "Volver al inicio de sesión"
     },
     "validation": {
       "emailRequired": "El correo electrónico es requerido",
@@ -95,7 +116,7 @@
   },
   "dashboard": {
     "title": "Panel de Control",
-    "welcome": "¡Bienvenido de vuelta, {name}!",
+    "welcome": "Bienvenido de vuelta, {{name}}. Aquí tienes un resumen de tus préstamos.",
     "stats": {
       "total": "Préstamos Totales",
       "totalDesc": "Todos los préstamos",
@@ -104,7 +125,26 @@
       "overdue": "Vencidos",
       "overdueDesc": "Necesitan atención",
       "returnRate": "Tasa de Devolución",
-      "returnRateDesc": "Artículos devueltos a tiempo"
+      "returnRateDesc": "Devueltos exitosamente"
+    },
+    "recentLoans": {
+      "title": "Préstamos Recientes",
+      "description": "Tu actividad de préstamos más reciente",
+      "empty": "Aún no hay préstamos",
+      "createFirst": "Crea tu Primer Préstamo",
+      "viewAll": "Ver todos"
+    },
+    "overdueAlert": {
+      "title": "Atención Requerida",
+      "description": "Tienes {{count}} préstamo{{count, plural, =1 {} other {s}}} vencido{{count, plural, =1 {} other {s}}}.",
+      "daysOverdue": "tiene {{days}} días de retraso.",
+      "viewAll": "Ver todos los préstamos vencidos"
+    },
+    "quickActions": {
+      "newLoan": "Nuevo Préstamo",
+      "viewAll": "Ver Todos los Préstamos",
+      "reports": "Reportes",
+      "export": "Exportar Datos"
     },
     "filters": {
       "all": "Todos",
@@ -125,8 +165,15 @@
     }
   },
   "loans": {
+    "pageTitle": "Mis Préstamos",
+    "pageDescription": "Administra y rastrea todos tus préstamos personales",
+    "newLoan": "Nuevo Préstamo",
+    "searchPlaceholder": "Buscar préstamos...",
+    "sortBy": "Ordenar por",
+    "backToLoans": "Volver a Préstamos",
     "create": {
       "title": "Crear Nuevo Préstamo",
+      "description": "Registra los detalles del artículo que estás prestando",
       "sections": {
         "basic": "Información Básica",
         "period": "Período del Préstamo",
@@ -191,6 +238,12 @@
       "conditionMax": "La condición debe tener menos de 200 caracteres",
       "photoSize": "La foto debe ser menor a 5MB",
       "photoType": "Solo se permiten imágenes JPG y PNG"
+    },
+    "actions": {
+      "edit": "Editar",
+      "delete": "Eliminar",
+      "return": "Marcar como Devuelto",
+      "view": "Ver Detalles"
     }
   },
   "errors": {

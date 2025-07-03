@@ -1,6 +1,7 @@
 "use client"
 
 import { useRouter, useSearchParams, usePathname } from "next/navigation"
+import { useTranslation } from "react-i18next"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -12,6 +13,7 @@ export function LoanFilters() {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
+  const { t } = useTranslation()
   const [isPending, startTransition] = useTransition()
   
   const [search, setSearch] = useState(searchParams.get("search") || "")
@@ -64,7 +66,7 @@ export function LoanFilters() {
         <div className="relative flex-1 max-w-sm">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
-            placeholder="Search loans..."
+            placeholder={t('loans.searchPlaceholder')}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="pl-9 pr-9"
@@ -81,7 +83,7 @@ export function LoanFilters() {
           )}
         </div>
         <Button type="submit" disabled={isPending}>
-          Search
+          {t('common.search')}
         </Button>
       </form>
 
@@ -92,22 +94,22 @@ export function LoanFilters() {
           className="w-full sm:w-auto"
         >
           <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="all">All</TabsTrigger>
-            <TabsTrigger value="active">Active</TabsTrigger>
-            <TabsTrigger value="overdue">Overdue</TabsTrigger>
-            <TabsTrigger value="returned">Returned</TabsTrigger>
+            <TabsTrigger value="all">{t('dashboard.filters.all')}</TabsTrigger>
+            <TabsTrigger value="active">{t('dashboard.filters.active')}</TabsTrigger>
+            <TabsTrigger value="overdue">{t('dashboard.filters.overdue')}</TabsTrigger>
+            <TabsTrigger value="returned">{t('dashboard.filters.returned')}</TabsTrigger>
           </TabsList>
         </Tabs>
 
         <Select value={currentSort} onValueChange={handleSortChange}>
           <SelectTrigger className="w-full sm:w-[180px]">
-            <SelectValue placeholder="Sort by" />
+            <SelectValue placeholder={t('loans.sortBy')} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="newest">Newest First</SelectItem>
-            <SelectItem value="oldest">Oldest First</SelectItem>
-            <SelectItem value="return-date">Return Date</SelectItem>
-            <SelectItem value="name">Item Name</SelectItem>
+            <SelectItem value="newest">{t('dashboard.sort.newest')}</SelectItem>
+            <SelectItem value="oldest">{t('dashboard.sort.oldest')}</SelectItem>
+            <SelectItem value="return-date">{t('dashboard.sort.dueDate')}</SelectItem>
+            <SelectItem value="name">{t('dashboard.sort.itemName')}</SelectItem>
           </SelectContent>
         </Select>
       </div>

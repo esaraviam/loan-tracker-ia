@@ -5,6 +5,7 @@ import Link from "next/link"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { ArrowLeft, Loader2 } from "lucide-react"
+import { useTranslation } from "react-i18next"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -28,6 +29,7 @@ import { resetPasswordSchema, type ResetPasswordInput } from "@/lib/validations"
 
 export default function ResetPasswordPage() {
   const { toast } = useToast()
+  const { t } = useTranslation()
   const [isLoading, setIsLoading] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
 
@@ -55,13 +57,13 @@ export default function ResetPasswordPage() {
 
       setIsSubmitted(true)
       toast({
-        title: "Check your email",
-        description: "We've sent you a password reset link.",
+        title: t('auth.resetPassword.emailSent'),
+        description: t('auth.resetPassword.emailSentDescription'),
       })
     } catch (error) {
       toast({
-        title: "Error",
-        description: error instanceof Error ? error.message : "Something went wrong",
+        title: t('common.error'),
+        description: error instanceof Error ? error.message : t('errors.generic'),
         variant: "destructive",
       })
     } finally {
@@ -73,21 +75,21 @@ export default function ResetPasswordPage() {
     return (
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle>Check your email</CardTitle>
+          <CardTitle>{t('auth.resetPassword.emailSent')}</CardTitle>
           <CardDescription>
-            We&apos;ve sent a password reset link to your email address.
+            {t('auth.resetPassword.emailSentDescription')}
           </CardDescription>
         </CardHeader>
         <CardContent>
           <p className="text-sm text-muted-foreground">
-            If you don&apos;t see the email, check your spam folder.
+            {t('auth.resetPassword.checkSpam')}
           </p>
         </CardContent>
         <CardFooter>
           <Link href="/login" className="w-full">
             <Button variant="outline" className="w-full">
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to login
+              {t('auth.resetPassword.backToLogin')}
             </Button>
           </Link>
         </CardFooter>
@@ -98,9 +100,9 @@ export default function ResetPasswordPage() {
   return (
     <Card className="w-full max-w-md">
       <CardHeader>
-        <CardTitle>Reset your password</CardTitle>
+        <CardTitle>{t('auth.resetPassword.title')}</CardTitle>
         <CardDescription>
-          Enter your email address and we&apos;ll send you a reset link
+          {t('auth.resetPassword.description')}
         </CardDescription>
       </CardHeader>
       <Form {...form}>
@@ -111,11 +113,11 @@ export default function ResetPasswordPage() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>{t('auth.fields.email')}</FormLabel>
                   <FormControl>
                     <Input
                       type="email"
-                      placeholder="name@example.com"
+                      placeholder={t('auth.fields.emailPlaceholder')}
                       {...field}
                     />
                   </FormControl>
@@ -131,12 +133,12 @@ export default function ResetPasswordPage() {
               disabled={isLoading}
             >
               {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              Send Reset Link
+              {t('auth.resetPassword.submit')}
             </Button>
             <Link href="/login" className="w-full">
               <Button variant="ghost" className="w-full">
                 <ArrowLeft className="mr-2 h-4 w-4" />
-                Back to login
+                {t('auth.resetPassword.backToLogin')}
               </Button>
             </Link>
           </CardFooter>
