@@ -14,41 +14,33 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { useToast } from "@/hooks/use-toast"
+import { logoutAction } from "@/app/actions/auth"
 
 interface UserNavProps {
   email: string
 }
 
 export function UserNav({ email }: UserNavProps) {
-  const router = useRouter()
+  // const router = useRouter() // Not needed with server actions
   const { toast } = useToast()
   const [isLoading, setIsLoading] = useState(false)
 
   async function handleLogout() {
     try {
       setIsLoading(true)
-      const response = await fetch("/api/auth/logout", {
-        method: "POST",
-      })
-
-      if (!response.ok) {
-        throw new Error("Failed to logout")
-      }
-
+      
       toast({
         title: "Logged out",
         description: "You have been successfully logged out.",
       })
 
-      router.push("/")
-      router.refresh()
+      await logoutAction()
     } catch (error) {
       toast({
         title: "Error",
         description: "Failed to logout. Please try again.",
         variant: "destructive",
       })
-    } finally {
       setIsLoading(false)
     }
   }

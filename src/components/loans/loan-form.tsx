@@ -29,6 +29,7 @@ import { useToast } from "@/hooks/use-toast"
 import { loanSchema, type LoanInput } from "@/lib/validations"
 import { PhotoUpload } from "./photo-upload"
 import { cn } from "@/lib/utils"
+import { createLoanAction } from "@/app/actions/loans"
 
 export function LoanForm() {
   const router = useRouter()
@@ -64,14 +65,9 @@ export function LoanForm() {
         formData.append("photos", photo)
       })
 
-      const response = await fetch("/api/loans", {
-        method: "POST",
-        body: formData,
-      })
+      const result = await createLoanAction(formData)
 
-      const result = await response.json()
-
-      if (!response.ok) {
+      if (!result.success) {
         throw new Error(result.error || "Failed to create loan")
       }
 
@@ -80,7 +76,7 @@ export function LoanForm() {
         description: "Your loan has been recorded successfully.",
       })
 
-      router.push(`/loans/${result.loan.id}`)
+      router.push(`/loans/${result.data?.loan.id}`)
     } catch (error) {
       toast({
         title: "Error",

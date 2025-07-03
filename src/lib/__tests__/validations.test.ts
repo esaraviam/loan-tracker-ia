@@ -14,7 +14,7 @@ describe("Validation Schemas", () => {
         email: "test@example.com",
         password: "Password123",
       }
-      
+
       const result = registerSchema.safeParse(validData)
       expect(result.success).toBe(true)
     })
@@ -24,11 +24,11 @@ describe("Validation Schemas", () => {
         email: "invalid-email",
         password: "Password123",
       }
-      
+
       const result = registerSchema.safeParse(invalidData)
       expect(result.success).toBe(false)
       if (!result.success) {
-        expect(result.error.errors[0].path).toContain('email')
+        expect(result?.error?.errors[0]?.path).toContain('email')
       }
     })
 
@@ -37,7 +37,7 @@ describe("Validation Schemas", () => {
         email: "test@example.com",
         password: "password123",
       }
-      
+
       const result = registerSchema.safeParse(invalidData)
       expect(result.success).toBe(false)
     })
@@ -47,7 +47,7 @@ describe("Validation Schemas", () => {
         email: "test@example.com",
         password: "PasswordABC",
       }
-      
+
       const result = registerSchema.safeParse(invalidData)
       expect(result.success).toBe(false)
     })
@@ -57,7 +57,7 @@ describe("Validation Schemas", () => {
         email: "test@example.com",
         password: "Pass1",
       }
-      
+
       const result = registerSchema.safeParse(invalidData)
       expect(result.success).toBe(false)
     })
@@ -67,7 +67,7 @@ describe("Validation Schemas", () => {
         email: "",
         password: "Password123",
       }
-      
+
       const result = registerSchema.safeParse(invalidData)
       expect(result.success).toBe(false)
     })
@@ -79,7 +79,7 @@ describe("Validation Schemas", () => {
         email: "test@example.com",
         password: "anyPassword123"
       }
-      
+
       const result = loginSchema.safeParse(validData)
       expect(result.success).toBe(true)
     })
@@ -89,7 +89,7 @@ describe("Validation Schemas", () => {
         email: "not-an-email",
         password: "password123"
       }
-      
+
       const result = loginSchema.safeParse(invalidData)
       expect(result.success).toBe(false)
     })
@@ -99,7 +99,7 @@ describe("Validation Schemas", () => {
         email: "test@example.com",
         password: ""
       }
-      
+
       const result = loginSchema.safeParse(invalidData)
       expect(result.success).toBe(false)
     })
@@ -115,7 +115,7 @@ describe("Validation Schemas", () => {
       const validData = {
         email: "test@example.com"
       }
-      
+
       const result = resetPasswordSchema.safeParse(validData)
       expect(result.success).toBe(true)
     })
@@ -124,7 +124,7 @@ describe("Validation Schemas", () => {
       const invalidData = {
         email: "invalid-email"
       }
-      
+
       const result = resetPasswordSchema.safeParse(invalidData)
       expect(result.success).toBe(false)
     })
@@ -136,7 +136,7 @@ describe("Validation Schemas", () => {
         password: "Password123",
         confirmPassword: "Password123"
       }
-      
+
       const result = newPasswordSchema.safeParse(validData)
       expect(result.success).toBe(true)
     })
@@ -146,11 +146,11 @@ describe("Validation Schemas", () => {
         password: "Password123",
         confirmPassword: "Different123"
       }
-      
+
       const result = newPasswordSchema.safeParse(invalidData)
       expect(result.success).toBe(false)
       if (!result.success) {
-        expect(result.error.errors[0].message).toContain("match")
+        expect(result?.error?.errors[0]?.message).toContain("match")
       }
     })
 
@@ -159,7 +159,7 @@ describe("Validation Schemas", () => {
         password: "weak",
         confirmPassword: "weak"
       }
-      
+
       const result = newPasswordSchema.safeParse(invalidData)
       expect(result.success).toBe(false)
     })
@@ -176,7 +176,7 @@ describe("Validation Schemas", () => {
         returnBy: "2024-02-01",
         stateStart: "Good condition",
       }
-      
+
       const result = loanSchema.safeParse(validData)
       expect(result.success).toBe(true)
     })
@@ -190,7 +190,7 @@ describe("Validation Schemas", () => {
         returnBy: "2024-02-01",
         stateStart: "Good",
       }
-      
+
       const result = loanSchema.safeParse(validData)
       expect(result.success).toBe(true)
     })
@@ -204,7 +204,7 @@ describe("Validation Schemas", () => {
         returnBy: "2024-02-01",
         stateStart: "Good",
       }
-      
+
       const result = loanSchema.safeParse(invalidData)
       expect(result.success).toBe(false)
     })
@@ -218,11 +218,11 @@ describe("Validation Schemas", () => {
         returnBy: "2024-01-01",
         stateStart: "Good",
       }
-      
+
       const result = loanSchema.safeParse(invalidData)
       expect(result.success).toBe(false)
       if (!result.success) {
-        expect(result.error.errors[0].message).toContain("after loan date")
+        expect(result?.error?.errors[0]?.message).toContain("after loan date")
       }
     })
 
@@ -235,7 +235,7 @@ describe("Validation Schemas", () => {
         returnBy: "2024-02-01",
         stateStart: "Good",
       }
-      
+
       const result = loanSchema.safeParse(invalidData)
       expect(result.success).toBe(false)
     })
@@ -243,7 +243,7 @@ describe("Validation Schemas", () => {
     it("should reject future loan date", () => {
       const tomorrow = new Date()
       tomorrow.setDate(tomorrow.getDate() + 1)
-      
+
       const invalidData = {
         recipientName: "John Doe",
         itemName: "Book",
@@ -252,13 +252,13 @@ describe("Validation Schemas", () => {
         returnBy: "2025-01-01",
         stateStart: "Good",
       }
-      
+
       const result = loanSchema.safeParse(invalidData)
       expect(result.success).toBe(false)
       if (!result.success) {
         // The validation fails because return date must be after loan date,
         // not specifically because the loan date is in the future
-        expect(result.error.errors.some(err => 
+        expect(result.error.errors.some(err =>
           err.message.includes("future") || err.message.includes("after loan date")
         )).toBe(true)
       }
@@ -273,7 +273,7 @@ describe("Validation Schemas", () => {
         returnBy: "2024-02-01",
         stateStart: "Good",
       }
-      
+
       const result = loanSchema.safeParse(validData)
       expect(result.success).toBe(true)
     })
@@ -287,7 +287,7 @@ describe("Validation Schemas", () => {
         returnBy: "2024-02-01",
         stateStart: "c".repeat(201),
       }
-      
+
       const result = loanSchema.safeParse(invalidData)
       expect(result.success).toBe(false)
     })
@@ -298,7 +298,7 @@ describe("Validation Schemas", () => {
       const validData = {
         stateEnd: "Returned in good condition",
       }
-      
+
       const result = returnLoanSchema.safeParse(validData)
       expect(result.success).toBe(true)
     })
@@ -307,7 +307,7 @@ describe("Validation Schemas", () => {
       const invalidData = {
         stateEnd: "",
       }
-      
+
       const result = returnLoanSchema.safeParse(invalidData)
       expect(result.success).toBe(false)
     })
@@ -316,7 +316,7 @@ describe("Validation Schemas", () => {
       const invalidData = {
         stateEnd: "a".repeat(201),
       }
-      
+
       const result = returnLoanSchema.safeParse(invalidData)
       expect(result.success).toBe(false)
     })

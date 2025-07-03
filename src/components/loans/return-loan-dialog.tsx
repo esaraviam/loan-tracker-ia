@@ -28,6 +28,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { useToast } from "@/hooks/use-toast"
 import { returnLoanSchema, type ReturnLoanInput } from "@/lib/validations"
 import { PhotoUpload } from "./photo-upload"
+import { returnLoanAction } from "@/app/actions/loans"
 
 interface ReturnLoanDialogProps {
   loanId: string
@@ -60,14 +61,9 @@ export function ReturnLoanDialog({ loanId }: ReturnLoanDialogProps) {
         formData.append("photos", photo)
       })
 
-      const response = await fetch(`/api/loans/${loanId}/return`, {
-        method: "POST",
-        body: formData,
-      })
+      const result = await returnLoanAction(loanId, formData)
 
-      const result = await response.json()
-
-      if (!response.ok) {
+      if (!result.success) {
         throw new Error(result.error || "Failed to mark loan as returned")
       }
 

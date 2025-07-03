@@ -8,8 +8,8 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
 import { useToast } from "@/hooks/use-toast"
-import { Download, FileJson, FileSpreadsheet, FileText, Loader2 } from "lucide-react"
-import { format } from "date-fns"
+import { FileJson, FileSpreadsheet, FileText, Loader2 } from "lucide-react"
+import { exportLoansAction } from "@/app/actions/loans"
 
 export function ExportOptions() {
   const { toast } = useToast()
@@ -23,30 +23,30 @@ export function ExportOptions() {
     try {
       setIsLoading(true)
 
-      const params = new URLSearchParams({
-        format,
-        dateRange,
-        includePhotos: includePhotos.toString(),
-        includeReturned: includeReturned.toString(),
-      })
-
-      const response = await fetch(`/api/loans/export?${params}`)
+      const result = await exportLoansAction(format as "csv" | "json" | "pdf")
       
-      if (!response.ok) {
-        throw new Error("Export failed")
+      if (!result.success) {
+        throw new Error(result.error || "Export failed")
       }
 
-      // Get filename from headers or use default
-      const contentDisposition = response.headers.get("content-disposition")
-      const filenameMatch = contentDisposition?.match(/filename="(.+)"/)
-      const filename = filenameMatch?.[1] || `loans-export-${format(new Date(), "yyyy-MM-dd")}.${format}`
+      if (result.data?.format === "pdf") {
+        // For PDF, we need to handle it differently
+        toast({
+          title: "PDF Export",
+          description: "PDF export needs to be implemented on the client side",
+          variant: "destructive",
+        })
+        return
+      }
 
       // Download the file
-      const blob = await response.blob()
+      const blob = new Blob([result.data?.content || ""], { 
+        type: result.data?.mimeType || "text/plain" 
+      })
       const url = window.URL.createObjectURL(blob)
       const a = document.createElement("a")
       a.href = url
-      a.download = filename
+      a.download = result.data?.filename || `loans-export.${format}`
       document.body.appendChild(a)
       a.click()
       window.URL.revokeObjectURL(url)
@@ -54,7 +54,7 @@ export function ExportOptions() {
 
       toast({
         title: "Export successful!",
-        description: `Your loan data has been exported as ${filename}`,
+        description: `Your loan data has been exported`,
       })
     } catch (error) {
       toast({

@@ -26,6 +26,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { useToast } from "@/hooks/use-toast"
 import { registerSchema, type RegisterInput } from "@/lib/validations"
+import { registerAction } from "@/app/actions/auth"
 
 export default function RegisterPage() {
   const router = useRouter()
@@ -43,15 +44,9 @@ export default function RegisterPage() {
   async function onSubmit(data: RegisterInput) {
     try {
       setIsLoading(true)
-      const response = await fetch("/api/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      })
+      const result = await registerAction(data.email, data.password)
 
-      const result = await response.json()
-
-      if (!response.ok) {
+      if (!result.success) {
         throw new Error(result.error || "Registration failed")
       }
 
@@ -61,7 +56,8 @@ export default function RegisterPage() {
       })
 
       // Auto-login and redirect to dashboard
-      window.location.href = "/dashboard"
+      router.push("/dashboard")
+      router.refresh()
     } catch (error) {
       toast({
         title: "Error",

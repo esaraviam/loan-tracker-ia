@@ -26,6 +26,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { useToast } from "@/hooks/use-toast"
 import { loginSchema, type LoginInput } from "@/lib/validations"
+import { loginAction } from "@/app/actions/auth"
 
 export default function LoginPage() {
   const router = useRouter()
@@ -43,15 +44,9 @@ export default function LoginPage() {
   async function onSubmit(data: LoginInput) {
     try {
       setIsLoading(true)
-      const response = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      })
+      const result = await loginAction(data.email, data.password)
 
-      const result = await response.json()
-
-      if (!response.ok) {
+      if (!result.success) {
         throw new Error(result.error || "Login failed")
       }
 
@@ -61,7 +56,8 @@ export default function LoginPage() {
       })
 
       // Force navigation to dashboard
-      window.location.href = "/dashboard"
+      router.push("/dashboard")
+      router.refresh()
     } catch (error) {
       toast({
         title: "Error",
