@@ -3,6 +3,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from "recharts"
 import { useEffect, useState } from "react"
+import { getLoanDurationStatsAction } from "@/app/actions/dashboard"
 
 interface LoanDurationChartProps {
   userId: string
@@ -28,16 +29,37 @@ export function LoanDurationChart({ userId }: LoanDurationChartProps) {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch(`/api/reports/loan-duration?userId=${userId}`)
-        const result = await response.json()
+        const result = await getLoanDurationStatsAction()
         
-        const chartData = Object.entries(result.durations || {}).map(([range, count]) => ({
-          name: range,
-          value: count as number,
-          color: COLORS[range as keyof typeof COLORS] || "#000",
-        }))
+        if (result.success && result.data?.averageDurations) {
+          // Group durations into ranges
+          const ranges = {
+            "< 7 days": 0,
+            "7-30 days": 0,
+            "1-3 months": 0,
+            "> 3 months": 0
+          }
+          
+          result.data.averageDurations.forEach(item => {
+            if (item.averageDays < 7) {
+              ranges["< 7 days"]++
+            } else if (item.averageDays <= 30) {
+              ranges["7-30 days"]++
+            } else if (item.averageDays <= 90) {
+              ranges["1-3 months"]++
+            } else {
+              ranges["> 3 months"]++
+            }
+          })
+          
+          const chartData = Object.entries(ranges).map(([range, count]) => ({
+            name: range,
+            value: count,
+            color: COLORS[range as keyof typeof COLORS] || "#000",
+          })).filter(item => item.value > 0)
 
-        setData(chartData)
+          setData(chartData)
+        }
       } catch (error) {
         console.error("Failed to fetch duration data:", error)
       } finally {

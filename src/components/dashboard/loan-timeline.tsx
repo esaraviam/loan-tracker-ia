@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts"
 import { useEffect, useState } from "react"
 import { format } from "date-fns"
+import { getLoanTimelineAction } from "@/app/actions/dashboard"
 
 interface LoanTimelineProps {
   userId: string
@@ -22,9 +23,17 @@ export function LoanTimeline({ userId }: LoanTimelineProps) {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch(`/api/dashboard/loan-timeline?userId=${userId}`)
-        const result = await response.json()
-        setData(result.timeline || [])
+        const result = await getLoanTimelineAction()
+        
+        if (result.success && result.data?.timeline) {
+          // Transform the data to include active loans
+          const transformedData = result.data.timeline.map(item => ({
+            date: item.date,
+            active: item.created,
+            returned: item.returned
+          }))
+          setData(transformedData)
+        }
       } catch (error) {
         console.error("Failed to fetch timeline data:", error)
       } finally {

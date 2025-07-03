@@ -25,6 +25,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { useToast } from "@/hooks/use-toast"
 import { resetPasswordSchema, type ResetPasswordInput } from "@/lib/validations"
+import { resetPasswordAction } from "@/app/actions/auth"
 
 export default function ResetPasswordPage() {
   const { toast } = useToast()
@@ -41,15 +42,9 @@ export default function ResetPasswordPage() {
   async function onSubmit(data: ResetPasswordInput) {
     try {
       setIsLoading(true)
-      const response = await fetch("/api/auth/reset-password", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      })
+      const result = await resetPasswordAction(data.email)
 
-      const result = await response.json()
-
-      if (!response.ok) {
+      if (!result.success) {
         throw new Error(result.error || "Failed to send reset email")
       }
 

@@ -3,6 +3,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from "recharts"
 import { useEffect, useState } from "react"
+import { getLoansByCategoryAction } from "@/app/actions/dashboard"
 
 interface LoansByCategoryProps {
   userId: string
@@ -32,19 +33,19 @@ export function LoansByCategory({ userId }: LoansByCategoryProps) {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch(`/api/dashboard/loans-by-category?userId=${userId}`)
-        const result = await response.json()
+        const result = await getLoansByCategoryAction()
         
-        const chartData = Object.entries(result.categories as Record<string, number>)
-          .map(([name, value], index) => ({
-            name: name || "Other",
-            value: value as number,
-            color: COLORS[index % COLORS.length] || "#000",
-          }))
-          .sort((a, b) => b.value - a.value)
-          .slice(0, 8) // Top 8 categories
+        if (result.success && result.data?.categories) {
+          const chartData = result.data.categories
+            .map((category, index) => ({
+              name: category.name || "Other",
+              value: category.value,
+              color: COLORS[index % COLORS.length] || "#000",
+            }))
+            .slice(0, 8) // Top 8 categories
 
-        setData(chartData)
+          setData(chartData)
+        }
       } catch (error) {
         console.error("Failed to fetch category data:", error)
       } finally {

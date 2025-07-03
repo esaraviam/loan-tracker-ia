@@ -12,7 +12,7 @@ import {
   removeAuthCookie,
   getCurrentUser 
 } from "@/lib/auth"
-import { loginSchema, registerSchema } from "@/lib/validations"
+import { loginSchema, registerSchema, resetPasswordSchema } from "@/lib/validations"
 
 export interface ActionResult<T = any> {
   success: boolean
@@ -180,6 +180,52 @@ export async function getCurrentUserAction(): Promise<ActionResult> {
     return {
       success: false,
       error: "Failed to get user"
+    }
+  }
+}
+
+export async function resetPasswordAction(email: string): Promise<ActionResult> {
+  try {
+    // Validate input
+    const validatedData = resetPasswordSchema.parse({ email })
+    
+    // Check if user exists
+    const user = await prisma.user.findUnique({
+      where: { email: validatedData.email },
+    })
+    
+    if (!user) {
+      // Don't reveal if user exists or not for security
+      return {
+        success: true,
+        data: { message: "If the email exists, a reset link has been sent" }
+      }
+    }
+    
+    // In a real app, you would:
+    // 1. Generate a reset token
+    // 2. Save it to the database with expiration
+    // 3. Send an email with the reset link
+    
+    // For now, we'll just return success
+    console.log(`Password reset requested for: ${user.email}`)
+    
+    return {
+      success: true,
+      data: { message: "If the email exists, a reset link has been sent" }
+    }
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return {
+        success: false,
+        error: error.errors[0]?.message || "Invalid input"
+      }
+    }
+    
+    console.error("Reset password error:", error)
+    return {
+      success: false,
+      error: "Something went wrong"
     }
   }
 }

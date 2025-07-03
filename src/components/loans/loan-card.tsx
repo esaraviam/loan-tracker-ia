@@ -28,6 +28,7 @@ export function LoanCard({ loan }: LoanCardProps) {
           src={loan.photos[0]?.url || "/placeholder-loan.png"}
           alt={loan.itemName}
           fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           className="object-cover"
         />
         <div className="absolute top-2 right-2">

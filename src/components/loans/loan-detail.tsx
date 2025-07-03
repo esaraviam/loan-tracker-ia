@@ -128,6 +128,7 @@ export function LoanDetail({ loan }: LoanDetailProps) {
                       src={photo.url}
                       alt="Initial condition"
                       fill
+                      sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 25vw"
                       className="object-cover rounded-lg"
                     />
                   </div>
@@ -138,6 +139,7 @@ export function LoanDetail({ loan }: LoanDetailProps) {
                     src="/placeholder-loan.png"
                     alt="No image available"
                     fill
+                    sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 25vw"
                     className="object-cover rounded-lg"
                   />
                 </div>
@@ -161,6 +163,7 @@ export function LoanDetail({ loan }: LoanDetailProps) {
                           src={photo.url}
                           alt="Return condition"
                           fill
+                          sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 25vw"
                           className="object-cover rounded-lg"
                         />
                       </div>
@@ -171,6 +174,7 @@ export function LoanDetail({ loan }: LoanDetailProps) {
                         src="/placeholder-loan.png"
                         alt="No image available"
                         fill
+                        sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 25vw"
                         className="object-cover rounded-lg"
                       />
                     </div>

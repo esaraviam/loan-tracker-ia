@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from "recharts"
 import { useEffect, useState } from "react"
 import { format } from "date-fns"
+import { getMonthlyActivityAction } from "@/app/actions/dashboard"
 
 interface MonthlyActivityProps {
   userId: string
@@ -22,9 +23,16 @@ export function MonthlyActivity({ userId }: MonthlyActivityProps) {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch(`/api/reports/monthly-activity?userId=${userId}`)
-        const result = await response.json()
-        setData(result.data || [])
+        const result = await getMonthlyActivityAction()
+        
+        if (result.success && result.data?.monthlyActivity) {
+          const transformedData = result.data.monthlyActivity.map(item => ({
+            month: item.month,
+            loans: item.created,
+            returns: item.returned
+          }))
+          setData(transformedData)
+        }
       } catch (error) {
         console.error("Failed to fetch monthly activity:", error)
       } finally {
