@@ -120,9 +120,9 @@ export function LoanDetail({ loan }: LoanDetailProps) {
             <p className="text-sm text-muted-foreground mb-4">
               {loan.stateStart}
             </p>
-            {initialPhotos.length > 0 && (
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                {initialPhotos.map((photo) => (
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+              {initialPhotos.length > 0 ? (
+                initialPhotos.map((photo) => (
                   <div key={photo.id} className="relative aspect-square">
                     <Image
                       src={photo.url}
@@ -131,9 +131,18 @@ export function LoanDetail({ loan }: LoanDetailProps) {
                       className="object-cover rounded-lg"
                     />
                   </div>
-                ))}
-              </div>
-            )}
+                ))
+              ) : (
+                <div className="relative aspect-square">
+                  <Image
+                    src="/placeholder-loan.png"
+                    alt="No image available"
+                    fill
+                    className="object-cover rounded-lg"
+                  />
+                </div>
+              )}
+            </div>
           </div>
 
           {loan.stateEnd && (
@@ -144,9 +153,9 @@ export function LoanDetail({ loan }: LoanDetailProps) {
                 <p className="text-sm text-muted-foreground mb-4">
                   {loan.stateEnd}
                 </p>
-                {returnPhotos.length > 0 && (
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                    {returnPhotos.map((photo) => (
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                  {returnPhotos.length > 0 ? (
+                    returnPhotos.map((photo) => (
                       <div key={photo.id} className="relative aspect-square">
                         <Image
                           src={photo.url}
@@ -155,9 +164,18 @@ export function LoanDetail({ loan }: LoanDetailProps) {
                           className="object-cover rounded-lg"
                         />
                       </div>
-                    ))}
-                  </div>
-                )}
+                    ))
+                  ) : (
+                    <div className="relative aspect-square">
+                      <Image
+                        src="/placeholder-loan.png"
+                        alt="No image available"
+                        fill
+                        className="object-cover rounded-lg"
+                      />
+                    </div>
+                  )}
+                </div>
               </div>
             </>
           )}

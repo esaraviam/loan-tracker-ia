@@ -23,38 +23,25 @@ export function LoanCard({ loan }: LoanCardProps) {
 
   return (
     <Card className="overflow-hidden hover:shadow-lg transition-shadow">
-      {loan.photos[0] && (
-        <div className="relative h-48 w-full">
-          <Image
-            src={loan.photos[0].url}
-            alt={loan.itemName}
-            fill
-            className="object-cover"
-          />
-          <div className="absolute top-2 right-2">
-            <Badge
-              variant={status === "overdue" ? "destructive" : "secondary"}
-              className={statusColor}
-            >
-              {status}
-              {status === "overdue" && ` (${daysOverdue}d)`}
-            </Badge>
-          </div>
+      <div className="relative h-48 w-full">
+        <Image
+          src={loan.photos[0]?.url || "/placeholder-loan.png"}
+          alt={loan.itemName}
+          fill
+          className="object-cover"
+        />
+        <div className="absolute top-2 right-2">
+          <Badge
+            variant={status === "overdue" ? "destructive" : "secondary"}
+            className={statusColor}
+          >
+            {status}
+            {status === "overdue" && ` (${daysOverdue}d)`}
+          </Badge>
         </div>
-      )}
+      </div>
       
-      <CardHeader className={!loan.photos[0] ? "pb-3" : ""}>
-        {!loan.photos[0] && (
-          <div className="flex justify-between items-start mb-2">
-            <Badge
-              variant={status === "overdue" ? "destructive" : "secondary"}
-              className={statusColor}
-            >
-              {status}
-              {status === "overdue" && ` (${daysOverdue}d)`}
-            </Badge>
-          </div>
-        )}
+      <CardHeader>
         <h3 className="font-semibold text-lg line-clamp-1">{loan.itemName}</h3>
         {loan.quantity > 1 && (
           <p className="text-sm text-muted-foreground">Quantity: {loan.quantity}</p>
