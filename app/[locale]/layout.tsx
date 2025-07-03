@@ -29,7 +29,13 @@ export default async function LocaleLayout({
 
   // Providing all messages to the client
   // side is the easiest way to get started
-  const messages = await getMessages({ locale })
+  // Get messages for the current locale
+  let messages
+  try {
+    messages = (await import(`../../messages/${locale}.json`)).default
+  } catch (error) {
+    notFound()
+  }
 
   return (
     <html lang={locale} suppressHydrationWarning>

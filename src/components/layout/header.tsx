@@ -1,12 +1,14 @@
+"use client"
+
 import { Package2 } from "lucide-react"
 import { Link } from "@/i18n/navigation"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { AuthButtons } from "@/components/auth/auth-buttons"
 import { LocaleSwitcher } from "@/components/locale-switcher"
-import { getTranslations } from "next-intl/server"
+import { useTranslations } from "next-intl"
 
-export async function Header() {
-  const t = await getTranslations()
+export function Header() {
+  const t = useTranslations()
   
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
