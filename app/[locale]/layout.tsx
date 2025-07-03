@@ -17,17 +17,19 @@ export const metadata: Metadata = {
 
 export default async function LocaleLayout({
   children,
-  params: { locale }
+  params
 }: Readonly<{
   children: React.ReactNode
-  params: { locale: string }
+  params: Promise<{ locale: string }>
 }>) {
+  const { locale } = await params
+  
   // Validate that the incoming `locale` parameter is valid
   if (!locales.includes(locale as any)) notFound()
 
   // Providing all messages to the client
   // side is the easiest way to get started
-  const messages = await getMessages()
+  const messages = await getMessages({ locale })
 
   return (
     <html lang={locale} suppressHydrationWarning>
