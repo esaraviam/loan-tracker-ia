@@ -1,0 +1,78 @@
+// This is your Prisma schema file for production (PostgreSQL)
+// Copy this to schema.prisma when deploying to Vercel
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String          @id @default(cuid())
+  email          String          @unique
+  passwordHash   String          @map("password_hash")
+  createdAt      DateTime        @default(now()) @map("created_at")
+  updatedAt      DateTime        @updatedAt @map("updated_at")
+  loans          Loan[]
+  passwordResets PasswordReset[]
+
+  @@map("users")
+}
+
+model Loan {
+  id            String        @id @default(cuid())
+  userId        String        @map("user_id")
+  recipientName String        @map("recipient_name")
+  itemName      String        @map("item_name")
+  description   String?
+  quantity      Int
+  borrowedAt    DateTime      @map("borrowed_at")
+  returnBy      DateTime      @map("return_by")
+  returnedAt    DateTime?     @map("returned_at")
+  stateStart    String        @map("state_start")
+  stateEnd      String?       @map("state_end")
+  createdAt     DateTime      @default(now()) @map("created_at")
+  updatedAt     DateTime      @updatedAt @map("updated_at")
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  photos        LoanPhoto[]
+  reminders     ReminderLog[]
+
+  @@map("loans")
+}
+
+model LoanPhoto {
+  id         String   @id @default(cuid())
+  loanId     String   @map("loan_id")
+  url        String
+  uploadedAt DateTime @default(now()) @map("uploaded_at")
+  type       String // "initial" or "return"
+  loan       Loan     @relation(fields: [loanId], references: [id], onDelete: Cascade)
+
+  @@map("loan_photos")
+}
+
+model ReminderLog {
+  id      String   @id @default(cuid())
+  loanId  String   @map("loan_id")
+  sentTo  String   @map("sent_to")
+  subject String
+  sentAt  DateTime @default(now()) @map("sent_at")
+  loan    Loan     @relation(fields: [loanId], references: [id], onDelete: Cascade)
+
+  @@map("reminder_logs")
+}
+
+model PasswordReset {
+  id        String    @id @default(cuid())
+  userId    String    @map("user_id")
+  token     String    @unique
+  expiresAt DateTime  @map("expires_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+  usedAt    DateTime? @map("used_at")
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("password_resets")
+}

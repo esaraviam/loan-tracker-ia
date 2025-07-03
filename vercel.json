@@ -1,0 +1,24 @@
+{
+  "framework": "nextjs",
+  "buildCommand": "npm run vercel-build",
+  "outputDirectory": ".next",
+  "env": {
+    "NODE_ENV": "production"
+  },
+  "build": {
+    "env": {
+      "DATABASE_URL": "@database_url",
+      "JWT_SECRET": "@jwt_secret",
+      "JWT_EXPIRE_TIME": "@jwt_expire_time",
+      "NEXTAUTH_URL": "@nextauth_url"
+    }
+  },
+  "functions": {
+    "app/**/*.tsx": {
+      "maxDuration": 30
+    },
+    "src/app/actions/*.ts": {
+      "maxDuration": 30
+    }
+  }
+}
