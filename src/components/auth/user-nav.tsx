@@ -1,9 +1,9 @@
 "use client"
 
 import { useState } from "react"
-import Link from "next/link"
-import { useRouter } from "next/navigation"
 import { User, LogOut, LayoutDashboard, Loader2 } from "lucide-react"
+import { useTranslations } from "next-intl"
+import { Link, useRouter } from "@/i18n/navigation"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -22,6 +22,7 @@ interface UserNavProps {
 export function UserNav({ email }: UserNavProps) {
   const router = useRouter()
   const { toast } = useToast()
+  const t = useTranslations()
   const [isLoading, setIsLoading] = useState(false)
 
   async function handleLogout() {
@@ -36,16 +37,16 @@ export function UserNav({ email }: UserNavProps) {
       }
 
       toast({
-        title: "Logged out",
-        description: "You have been successfully logged out.",
+        title: t('auth.logout.success'),
+        description: t('auth.logout.success'),
       })
 
       router.push("/")
       router.refresh()
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Failed to logout. Please try again.",
+        title: t('common.error'),
+        description: t('errors.generic'),
         variant: "destructive",
       })
     } finally {
@@ -62,12 +63,12 @@ export function UserNav({ email }: UserNavProps) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
-        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+        <DropdownMenuLabel>{t('nav.myAccount')}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
           <Link href="/dashboard" className="cursor-pointer">
             <LayoutDashboard className="mr-2 h-4 w-4" />
-            Dashboard
+            {t('nav.dashboard')}
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
@@ -81,7 +82,7 @@ export function UserNav({ email }: UserNavProps) {
           ) : (
             <LogOut className="mr-2 h-4 w-4" />
           )}
-          Logout
+          {t('nav.logout')}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

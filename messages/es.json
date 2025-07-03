@@ -1,0 +1,203 @@
+{
+  "common": {
+    "appName": "Rastreador de Préstamos",
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "back": "Atrás",
+    "next": "Siguiente",
+    "search": "Buscar",
+    "filter": "Filtrar",
+    "sort": "Ordenar",
+    "noResults": "No se encontraron resultados",
+    "required": "Requerido",
+    "optional": "Opcional"
+  },
+  "nav": {
+    "home": "Inicio",
+    "dashboard": "Panel",
+    "loans": "Préstamos",
+    "login": "Iniciar Sesión",
+    "register": "Registrarse",
+    "logout": "Cerrar Sesión",
+    "myAccount": "Mi Cuenta",
+    "getStarted": "Comenzar"
+  },
+  "landing": {
+    "hero": {
+      "title": "Rastrea Tus Préstamos Personales",
+      "subtitle": "Con Confianza",
+      "description": "Mantén un registro de los artículos que prestas a amigos, familiares y colegas. Nunca olvides lo que has prestado.",
+      "cta": "Comienza a Rastrear Ahora"
+    },
+    "features": {
+      "title": "¿Por qué elegir Rastreador de Préstamos?",
+      "secure": {
+        "title": "Seguro y Privado",
+        "description": "Tus datos están encriptados y solo tú puedes acceder a ellos"
+      },
+      "reminders": {
+        "title": "Recordatorios Inteligentes",
+        "description": "Recibe notificaciones cuando los artículos deban ser devueltos"
+      },
+      "dashboard": {
+        "title": "Panel Visual",
+        "description": "Ve todos tus préstamos de un vistazo con gráficos intuitivos"
+      }
+    },
+    "cta": {
+      "title": "¿Listo para comenzar?",
+      "description": "Únete a miles de usuarios que ya están rastreando sus préstamos eficientemente.",
+      "button": "Crear Cuenta Gratis"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Bienvenido de vuelta",
+      "subtitle": "Inicia sesión en tu cuenta",
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "rememberMe": "Recuérdame",
+      "forgotPassword": "¿Olvidaste tu contraseña?",
+      "submit": "Iniciar Sesión",
+      "noAccount": "¿No tienes una cuenta?",
+      "signUp": "Regístrate",
+      "success": "¡Bienvenido de vuelta!",
+      "error": "Credenciales inválidas"
+    },
+    "register": {
+      "title": "Crea tu cuenta",
+      "subtitle": "Comienza a rastrear tus préstamos hoy",
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "confirmPassword": "Confirmar Contraseña",
+      "submit": "Registrarse",
+      "hasAccount": "¿Ya tienes una cuenta?",
+      "signIn": "Inicia sesión",
+      "success": "¡Cuenta creada exitosamente!",
+      "error": "Error al registrarse"
+    },
+    "logout": {
+      "success": "Sesión cerrada exitosamente"
+    },
+    "validation": {
+      "emailRequired": "El correo electrónico es requerido",
+      "emailInvalid": "Por favor ingresa un correo válido",
+      "passwordRequired": "La contraseña es requerida",
+      "passwordMin": "La contraseña debe tener al menos 8 caracteres",
+      "passwordRequirements": "La contraseña debe contener mayúsculas, minúsculas y números",
+      "passwordMatch": "Las contraseñas no coinciden"
+    }
+  },
+  "dashboard": {
+    "title": "Panel de Control",
+    "welcome": "¡Bienvenido de vuelta, {name}!",
+    "stats": {
+      "total": "Préstamos Totales",
+      "totalDesc": "Todos los préstamos",
+      "active": "Préstamos Activos",
+      "activeDesc": "Actualmente prestados",
+      "overdue": "Vencidos",
+      "overdueDesc": "Necesitan atención",
+      "returnRate": "Tasa de Devolución",
+      "returnRateDesc": "Artículos devueltos a tiempo"
+    },
+    "filters": {
+      "all": "Todos",
+      "active": "Activos",
+      "overdue": "Vencidos",
+      "returned": "Devueltos"
+    },
+    "sort": {
+      "newest": "Más Recientes",
+      "oldest": "Más Antiguos",
+      "dueDate": "Fecha de Devolución",
+      "itemName": "Nombre del Artículo"
+    },
+    "empty": {
+      "title": "No se encontraron préstamos",
+      "description": "Crea tu primer préstamo para comenzar",
+      "cta": "Crear Préstamo"
+    }
+  },
+  "loans": {
+    "create": {
+      "title": "Crear Nuevo Préstamo",
+      "sections": {
+        "basic": "Información Básica",
+        "period": "Período del Préstamo",
+        "condition": "Condición del Artículo"
+      },
+      "fields": {
+        "itemName": "Nombre del Artículo",
+        "itemNamePlaceholder": "ej., Caja de Herramientas Roja",
+        "recipientName": "Nombre del Destinatario",
+        "recipientNamePlaceholder": "ej., Juan Pérez",
+        "description": "Descripción",
+        "descriptionPlaceholder": "Detalles adicionales sobre el artículo (opcional)",
+        "quantity": "Cantidad",
+        "loanDate": "Fecha del Préstamo",
+        "returnDate": "Fecha de Devolución",
+        "initialCondition": "Condición Inicial",
+        "conditionPlaceholder": "Describe la condición actual del artículo",
+        "photos": "Fotos",
+        "photosHelp": "Agrega fotos del artículo (máx. 5MB cada una)"
+      },
+      "submit": "Crear Préstamo",
+      "success": "¡Préstamo creado exitosamente!",
+      "error": "Error al crear el préstamo"
+    },
+    "return": {
+      "title": "Marcar como Devuelto",
+      "finalCondition": "Condición Final",
+      "conditionPlaceholder": "Describe la condición al momento de la devolución",
+      "photos": "Fotos de Devolución",
+      "submit": "Marcar como Devuelto",
+      "success": "¡Préstamo marcado como devuelto!",
+      "error": "Error al marcar el préstamo como devuelto"
+    },
+    "status": {
+      "active": "Activo",
+      "overdue": "Vencido",
+      "returned": "Devuelto"
+    },
+    "details": {
+      "borrowed": "Prestado:",
+      "due": "Vence:",
+      "returned": "Devuelto:",
+      "recipient": "Destinatario:",
+      "quantity": "Cantidad:",
+      "condition": "Condición:",
+      "returnCondition": "Condición de Devolución:",
+      "viewDetails": "Ver Detalles",
+      "markReturned": "Marcar como Devuelto"
+    },
+    "validation": {
+      "itemNameRequired": "El nombre del artículo es requerido",
+      "itemNameMax": "El nombre del artículo debe tener menos de 100 caracteres",
+      "recipientRequired": "El nombre del destinatario es requerido",
+      "recipientMax": "El nombre del destinatario debe tener menos de 100 caracteres",
+      "quantityRequired": "La cantidad es requerida",
+      "quantityMin": "La cantidad debe ser al menos 1",
+      "loanDateRequired": "La fecha del préstamo es requerida",
+      "loanDateFuture": "La fecha del préstamo no puede ser en el futuro",
+      "returnDateRequired": "La fecha de devolución es requerida",
+      "returnDateInvalid": "La fecha de devolución debe ser posterior a la fecha del préstamo",
+      "conditionRequired": "La condición inicial es requerida",
+      "conditionMax": "La condición debe tener menos de 200 caracteres",
+      "photoSize": "La foto debe ser menor a 5MB",
+      "photoType": "Solo se permiten imágenes JPG y PNG"
+    }
+  },
+  "errors": {
+    "generic": "Algo salió mal",
+    "unauthorized": "Acceso no autorizado",
+    "notFound": "No encontrado",
+    "serverError": "Error del servidor",
+    "networkError": "Error de red"
+  }
+}

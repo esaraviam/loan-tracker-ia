@@ -1,11 +1,13 @@
-import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Header } from "@/components/layout/header"
 import { getCurrentUser } from "@/lib/auth"
 import { ArrowRight, Shield, Clock, BarChart3 } from "lucide-react"
+import { getTranslations } from "next-intl/server"
+import { Link } from "@/i18n/navigation"
 
 export default async function LandingPage() {
   const user = await getCurrentUser()
+  const t = await getTranslations()
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -14,18 +16,17 @@ export default async function LandingPage() {
       <main className="flex-1">
         <section className="container flex flex-col items-center justify-center space-y-8 py-24 text-center">
           <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
-            Track Your Personal Loans
-            <span className="block text-primary">With Confidence</span>
+            {t('landing.hero.title')}
+            <span className="block text-primary">{t('landing.hero.subtitle')}</span>
           </h1>
           <p className="mx-auto max-w-2xl text-lg text-muted-foreground sm:text-xl">
-            Never lose track of items you&apos;ve lent out. Manage loans, set
-            reminders, and keep a photo record of your valuable possessions.
+            {t('landing.hero.description')}
           </p>
           <div className="flex flex-col gap-4 sm:flex-row">
             {user ? (
               <Link href="/dashboard">
                 <Button size="lg" className="gap-2">
-                  Go to Dashboard
+                  {t('nav.dashboard')}
                   <ArrowRight className="h-4 w-4" />
                 </Button>
               </Link>
@@ -33,13 +34,13 @@ export default async function LandingPage() {
               <>
                 <Link href="/register">
                   <Button size="lg" className="gap-2">
-                    Start Tracking Now
+                    {t('landing.hero.cta')}
                     <ArrowRight className="h-4 w-4" />
                   </Button>
                 </Link>
                 <Link href="/login">
                   <Button size="lg" variant="outline">
-                    Sign In
+                    {t('nav.login')}
                   </Button>
                 </Link>
               </>
@@ -49,38 +50,52 @@ export default async function LandingPage() {
 
         <section className="container py-24">
           <h2 className="mb-12 text-center text-3xl font-bold">
-            Why Choose Loan Tracker?
+            {t('landing.features.title')}
           </h2>
           <div className="grid gap-8 md:grid-cols-3">
             <div className="flex flex-col items-center space-y-4 text-center">
               <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
                 <Shield className="h-8 w-8 text-primary" />
               </div>
-              <h3 className="text-xl font-semibold">Secure & Private</h3>
+              <h3 className="text-xl font-semibold">{t('landing.features.secure.title')}</h3>
               <p className="text-muted-foreground">
-                Your data is encrypted and stored securely. Only you have
-                access to your loan records.
+                {t('landing.features.secure.description')}
               </p>
             </div>
             <div className="flex flex-col items-center space-y-4 text-center">
               <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
                 <Clock className="h-8 w-8 text-primary" />
               </div>
-              <h3 className="text-xl font-semibold">Smart Reminders</h3>
+              <h3 className="text-xl font-semibold">{t('landing.features.reminders.title')}</h3>
               <p className="text-muted-foreground">
-                Set return dates and get timely reminders so you never forget
-                about your loaned items.
+                {t('landing.features.reminders.description')}
               </p>
             </div>
             <div className="flex flex-col items-center space-y-4 text-center">
               <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
                 <BarChart3 className="h-8 w-8 text-primary" />
               </div>
-              <h3 className="text-xl font-semibold">Visual Dashboard</h3>
+              <h3 className="text-xl font-semibold">{t('landing.features.dashboard.title')}</h3>
               <p className="text-muted-foreground">
-                Get insights into your lending patterns with an intuitive
-                dashboard and filters.
+                {t('landing.features.dashboard.description')}
               </p>
+            </div>
+          </div>
+        </section>
+
+        <section className="container py-24 text-center">
+          <div className="mx-auto max-w-2xl space-y-4">
+            <h2 className="text-3xl font-bold">{t('landing.cta.title')}</h2>
+            <p className="text-lg text-muted-foreground">
+              {t('landing.cta.description')}
+            </p>
+            <div className="pt-4">
+              <Link href="/register">
+                <Button size="lg" className="gap-2">
+                  {t('landing.cta.button')}
+                  <ArrowRight className="h-4 w-4" />
+                </Button>
+              </Link>
             </div>
           </div>
         </section>
@@ -88,7 +103,7 @@ export default async function LandingPage() {
 
       <footer className="border-t py-6">
         <div className="container text-center text-sm text-muted-foreground">
-          <p>&copy; 2024 Loan Tracker. All rights reserved.</p>
+          <p>&copy; 2024 {t('common.appName')}. All rights reserved.</p>
         </div>
       </footer>
     </div>

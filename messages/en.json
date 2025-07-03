@@ -1,0 +1,203 @@
+{
+  "common": {
+    "appName": "Loan Tracker",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "back": "Back",
+    "next": "Next",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "noResults": "No results found",
+    "required": "Required",
+    "optional": "Optional"
+  },
+  "nav": {
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "loans": "Loans",
+    "login": "Login",
+    "register": "Register",
+    "logout": "Logout",
+    "myAccount": "My Account",
+    "getStarted": "Get Started"
+  },
+  "landing": {
+    "hero": {
+      "title": "Track Your Personal Loans",
+      "subtitle": "With Confidence",
+      "description": "Keep track of items you lend to friends, family, and colleagues. Never forget what you've loaned out again.",
+      "cta": "Start Tracking Now"
+    },
+    "features": {
+      "title": "Why Choose Loan Tracker?",
+      "secure": {
+        "title": "Secure & Private",
+        "description": "Your data is encrypted and only accessible by you"
+      },
+      "reminders": {
+        "title": "Smart Reminders",
+        "description": "Get notified when items are due for return"
+      },
+      "dashboard": {
+        "title": "Visual Dashboard",
+        "description": "See all your loans at a glance with intuitive charts"
+      }
+    },
+    "cta": {
+      "title": "Ready to get started?",
+      "description": "Join thousands of users who are already tracking their loans efficiently.",
+      "button": "Create Free Account"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Welcome back",
+      "subtitle": "Sign in to your account",
+      "email": "Email",
+      "password": "Password",
+      "rememberMe": "Remember me",
+      "forgotPassword": "Forgot your password?",
+      "submit": "Sign In",
+      "noAccount": "Don't have an account?",
+      "signUp": "Sign up",
+      "success": "Welcome back!",
+      "error": "Invalid credentials"
+    },
+    "register": {
+      "title": "Create your account",
+      "subtitle": "Start tracking your loans today",
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "submit": "Sign up",
+      "hasAccount": "Already have an account?",
+      "signIn": "Sign in",
+      "success": "Account created successfully!",
+      "error": "Registration failed"
+    },
+    "logout": {
+      "success": "Logged out successfully"
+    },
+    "validation": {
+      "emailRequired": "Email is required",
+      "emailInvalid": "Please enter a valid email",
+      "passwordRequired": "Password is required",
+      "passwordMin": "Password must be at least 8 characters",
+      "passwordRequirements": "Password must contain uppercase, lowercase, and number",
+      "passwordMatch": "Passwords do not match"
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Welcome back, {name}!",
+    "stats": {
+      "total": "Total Loans",
+      "totalDesc": "All time loans",
+      "active": "Active Loans",
+      "activeDesc": "Currently lent out",
+      "overdue": "Overdue",
+      "overdueDesc": "Need attention",
+      "returnRate": "Return Rate",
+      "returnRateDesc": "Items returned on time"
+    },
+    "filters": {
+      "all": "All",
+      "active": "Active",
+      "overdue": "Overdue",
+      "returned": "Returned"
+    },
+    "sort": {
+      "newest": "Newest First",
+      "oldest": "Oldest First",
+      "dueDate": "Return Date",
+      "itemName": "Item Name"
+    },
+    "empty": {
+      "title": "No loans found",
+      "description": "Create your first loan to get started",
+      "cta": "Create Loan"
+    }
+  },
+  "loans": {
+    "create": {
+      "title": "Create New Loan",
+      "sections": {
+        "basic": "Basic Information",
+        "period": "Loan Period",
+        "condition": "Item Condition"
+      },
+      "fields": {
+        "itemName": "Item Name",
+        "itemNamePlaceholder": "e.g., Red Toolbox",
+        "recipientName": "Recipient Name",
+        "recipientNamePlaceholder": "e.g., John Doe",
+        "description": "Description",
+        "descriptionPlaceholder": "Additional details about the item (optional)",
+        "quantity": "Quantity",
+        "loanDate": "Loan Date",
+        "returnDate": "Return Date",
+        "initialCondition": "Initial Condition",
+        "conditionPlaceholder": "Describe the current condition of the item",
+        "photos": "Photos",
+        "photosHelp": "Add photos of the item (max 5MB each)"
+      },
+      "submit": "Create Loan",
+      "success": "Loan created successfully!",
+      "error": "Failed to create loan"
+    },
+    "return": {
+      "title": "Mark as Returned",
+      "finalCondition": "Final Condition",
+      "conditionPlaceholder": "Describe the condition upon return",
+      "photos": "Return Photos",
+      "submit": "Mark as Returned",
+      "success": "Loan marked as returned!",
+      "error": "Failed to mark loan as returned"
+    },
+    "status": {
+      "active": "Active",
+      "overdue": "Overdue",
+      "returned": "Returned"
+    },
+    "details": {
+      "borrowed": "Borrowed:",
+      "due": "Due:",
+      "returned": "Returned:",
+      "recipient": "Recipient:",
+      "quantity": "Quantity:",
+      "condition": "Condition:",
+      "returnCondition": "Return Condition:",
+      "viewDetails": "View Details",
+      "markReturned": "Mark as Returned"
+    },
+    "validation": {
+      "itemNameRequired": "Item name is required",
+      "itemNameMax": "Item name must be less than 100 characters",
+      "recipientRequired": "Recipient name is required",
+      "recipientMax": "Recipient name must be less than 100 characters",
+      "quantityRequired": "Quantity is required",
+      "quantityMin": "Quantity must be at least 1",
+      "loanDateRequired": "Loan date is required",
+      "loanDateFuture": "Loan date cannot be in the future",
+      "returnDateRequired": "Return date is required",
+      "returnDateInvalid": "Return date must be after loan date",
+      "conditionRequired": "Initial condition is required",
+      "conditionMax": "Condition must be less than 200 characters",
+      "photoSize": "Photo must be less than 5MB",
+      "photoType": "Only JPG and PNG images are allowed"
+    }
+  },
+  "errors": {
+    "generic": "Something went wrong",
+    "unauthorized": "Unauthorized access",
+    "notFound": "Not found",
+    "serverError": "Server error",
+    "networkError": "Network error"
+  }
+}
